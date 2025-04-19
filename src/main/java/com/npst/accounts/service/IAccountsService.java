@@ -1,0 +1,10 @@
+package com.npst.accounts.service;
+
+import com.npst.accounts.dao.CustomerDto;
+
+public interface IAccountsService {
+
+    void createAccounts(CustomerDto customerDto);
+
+
+}
