@@ -5,6 +5,7 @@ import com.npst.accounts.dao.CustomerDto;
 import com.npst.accounts.dao.ResponseDto;
 import com.npst.accounts.service.IAccountsService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
 import org.springframework.http.ResponseEntity;
@@ -24,11 +25,9 @@ public class AccountsController {
     }
 
     @GetMapping("/fetch")
-    public ResponseEntity<ResponseDto> fetchAccount(@RequestParam String mobileNumber) {
-
-        return null;
-
-
+    public ResponseEntity<CustomerDto> fetchAccount(@RequestParam String mobileNumber) {
+        CustomerDto customerDto = iAccountsService.fetchAccount(mobileNumber);
+        return ResponseEntity.status(HttpStatus.OK).body(customerDto);
     }
 
 

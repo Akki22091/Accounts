@@ -1,11 +1,13 @@
 package com.npst.accounts.service.impl;
 
 import com.npst.accounts.constants.ApplicationConstants;
+import com.npst.accounts.dao.AccountsDto;
 import com.npst.accounts.dao.CustomerDto;
 import com.npst.accounts.entity.Accounts;
 import com.npst.accounts.entity.Customer;
 import com.npst.accounts.exception.CustomerAlreadyExists;
 import com.npst.accounts.exception.ResourceNotFoundException;
+import com.npst.accounts.mapper.AccountsMapper;
 import com.npst.accounts.mapper.CustomerMapper;
 import com.npst.accounts.repository.AccountsRepository;
 import com.npst.accounts.repository.CustomerRepository;
@@ -57,9 +59,33 @@ public class AccountsServiceImpl implements IAccountsService {
         Customer customer = customerRepository.findByMobileNumber(mobileNumber).orElseThrow(
                 () -> new ResourceNotFoundException("Customer", "mobileNumber", mobileNumber)
         );
-
-        return null;
+        Accounts accounts = accountsRepository.findByCustomerId(customer.getCustomerId()).orElseThrow(
+                () -> new ResourceNotFoundException("Accounts", "customerId", customer.getCustomerId().toString())
+        );
+        CustomerDto customerDto = CustomerMapper.mapToCustomerDto(customer, new CustomerDto());
+        customerDto.setAccountsDto(AccountsMapper.mapToAccountDto(accounts, new AccountsDto()));
+        return customerDto;
     }
 
+    @Override
+    public boolean updateCustomerWithAccount(CustomerDto customerDto) {
+        boolean isUpdated = false;
+        AccountsDto accountsDto = customerDto.getAccountsDto();
 
+        if (accountsDto != null) {
+            Accounts accounts = accountsRepository.findById(accountsDto.getAccountNumber()).orElseThrow(
+                    () -> new ResourceNotFoundException("Account", "Account-Number", accountsDto.getAccountNumber().toString())
+            );
+            AccountsMapper.mapToAccount(accountsDto, accounts);
+            accounts = accountsRepository.save(accounts);
+            Integer customerId = accounts.getCustomerId();
+            Customer customer = customerRepository.findById(customerId).orElseThrow(
+                    () -> new ResourceNotFoundException("Customer", "Customer-Id", customerId.toString())
+            );
+            CustomerMapper.mapToCustomer(customerDto, customer);
+            customerRepository.save(customer);
+            isUpdated = true;
+        }
+        return isUpdated;
+    }
 }
