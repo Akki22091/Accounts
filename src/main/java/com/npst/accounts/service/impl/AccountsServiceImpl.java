@@ -36,7 +36,6 @@ public class AccountsServiceImpl implements IAccountsService {
             log.warn("Customer already exists with mobile number: {}", customerDto.getMobileNumber());
             throw new CustomerAlreadyExists("Customer already exists with given mobile no " + customerDto.getMobileNumber());
         }
-
         Customer savedCustomer = customerRepository.save(customer);
         log.info("Customer saved with ID: {}", savedCustomer.getCustomerId());
 
@@ -74,7 +73,6 @@ public class AccountsServiceImpl implements IAccountsService {
         );
 
         log.info("Fetched customer and account data for customer ID: {}", customer.getCustomerId());
-
         CustomerDto customerDto = CustomerMapper.mapToCustomerDto(customer, new CustomerDto());
         customerDto.setAccountsDto(AccountsMapper.mapToAccountDto(accounts, new AccountsDto()));
         return customerDto;
@@ -126,13 +124,9 @@ public class AccountsServiceImpl implements IAccountsService {
             log.error("Customer not found for mobile number: {}", mobileNumber);
             return new ResourceNotFoundException("customer", "Mobile Number", mobileNumber);
         });
-
         accountsRepository.deleteByCustomerId(customer.getCustomerId());
         customerRepository.deleteById(customer.getCustomerId());
         log.info("Successfully deleted customer and account for customer ID: {}", customer.getCustomerId());
-
         return true;
     }
-
-
 }

@@ -35,5 +35,7 @@ public class BaseEntity {
     @Column(insertable = false)
     @LastModifiedBy
     private String updatedBy;
+
+
 }
 
