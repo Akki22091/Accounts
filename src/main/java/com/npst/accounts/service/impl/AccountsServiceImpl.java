@@ -15,6 +15,7 @@ import com.npst.accounts.service.IAccountsService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.util.Optional;
 import java.util.Random;
 
@@ -44,8 +45,7 @@ public class AccountsServiceImpl implements IAccountsService {
 
             Accounts newAccount = createNewAccount(savedCustomer);
             accountsRepository.save(newAccount);
-            log.info("New account created with account number: {} for customer ID: {}",
-                    newAccount.getAccountNumber(), savedCustomer.getCustomerId());
+            log.info("New account created with account number: {} for customer ID: {}", newAccount.getAccountNumber(), savedCustomer.getCustomerId());
         } catch (Exception e) {
             log.error("Exception occurred while creating account: {}", e.getMessage(), e);
             throw new RuntimeException("Failed to create account. Please try again later.");
@@ -137,16 +137,13 @@ public class AccountsServiceImpl implements IAccountsService {
                 log.error("Customer not found for mobile number: {}", mobileNumber);
                 return new ResourceNotFoundException("customer", "Mobile Number", mobileNumber);
             });
-
             accountsRepository.deleteByCustomerId(customer.getCustomerId());
             customerRepository.deleteById(customer.getCustomerId());
             log.info("Successfully deleted customer and account for customer ID: {}", customer.getCustomerId());
             return true;
-
         } catch (Exception e) {
             log.error("Exception occurred while deleting account: {}", e.getMessage(), e);
             throw new RuntimeException("Failed to delete account. Please try again later.");
         }
     }
-
 }
