@@ -9,6 +9,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -19,10 +20,10 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping(path = "/api", produces = MediaType.APPLICATION_JSON_VALUE)
 @Validated
 @Slf4j
-@AllArgsConstructor
 public class AccountsController {
 
-    private final IAccountsService iAccountsService;
+    @Autowired
+    private IAccountsService iAccountsService;
 
     @PostMapping("/create")
     public ResponseEntity<ResponseDto> createAccount(@Valid @RequestBody CustomerDto customerDto) {

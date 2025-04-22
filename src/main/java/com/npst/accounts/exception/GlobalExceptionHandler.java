@@ -22,8 +22,7 @@ import java.util.Map;
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @Override
-    protected ResponseEntity<Object> handleMethodArgumentNotValid(
-            MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
         Map<String, String> validationErrors = new HashMap<>();
         List<ObjectError> allErrors = ex.getBindingResult().getAllErrors();
         allErrors.forEach((error) -> {
@@ -36,38 +35,17 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(CustomerAlreadyExists.class)
     public ResponseEntity<ErrorResponseDto> handleCustomerAlreadyExists(CustomerAlreadyExists exception, WebRequest webRequest) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
-                new ErrorResponseDto(
-                        webRequest.getDescription(false),
-                        HttpStatus.BAD_REQUEST,
-                        exception.getMessage(),
-                        LocalDateTime.now()
-                )
-        );
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponseDto(webRequest.getDescription(false), HttpStatus.BAD_REQUEST, exception.getMessage(), LocalDateTime.now()));
     }
 
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<ErrorResponseDto> handleResourceNotFoundException(ResourceNotFoundException exception, WebRequest webRequest) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-                new ErrorResponseDto(
-                        webRequest.getDescription(false),
-                        HttpStatus.NOT_FOUND,
-                        exception.getMessage(),
-                        LocalDateTime.now()
-                )
-        );
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponseDto(webRequest.getDescription(false), HttpStatus.NOT_FOUND, exception.getMessage(), LocalDateTime.now()));
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErrorResponseDto> handleAllExceptions(Exception exception, WebRequest webRequest) {
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
-                new ErrorResponseDto(
-                        webRequest.getDescription(false),
-                        HttpStatus.INTERNAL_SERVER_ERROR,
-                        exception.getMessage(),
-                        LocalDateTime.now()
-                )
-        );
+    public ResponseEntity<ErrorResponseDto> handleGlobalException(Exception exception, WebRequest webRequest) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorResponseDto(webRequest.getDescription(false), HttpStatus.INTERNAL_SERVER_ERROR, exception.getMessage(), LocalDateTime.now()));
     }
 
 
