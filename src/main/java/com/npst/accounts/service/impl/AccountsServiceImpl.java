@@ -28,6 +28,7 @@ public class AccountsServiceImpl implements IAccountsService {
     @Autowired
     private CustomerRepository customerRepository;
 
+
     @Override
     public void createAccounts(CustomerDto customerDto) {
         log.info("Creating account for mobile number: {}", customerDto.getMobileNumber());
@@ -128,6 +129,5 @@ public class AccountsServiceImpl implements IAccountsService {
         log.info("Successfully deleted customer and account for customer ID: {}", customer.getCustomerId());
         return true;
     }
-
 
 }

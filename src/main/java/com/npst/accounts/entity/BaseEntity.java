@@ -36,6 +36,5 @@ public class BaseEntity {
     @LastModifiedBy
     private String updatedBy;
 
-
 }
 

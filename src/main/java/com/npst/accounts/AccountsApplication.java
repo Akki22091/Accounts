@@ -31,10 +31,12 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
                 url = "https://www.google.com"
         )
 )
+
 public class AccountsApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(AccountsApplication.class, args);
     }
+
 
 }
