@@ -3,9 +3,9 @@ server:
 
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/accounts?useSSL=false&serverTimezone=UTC
+    url: jdbc:mysql://localhost:3307/accounts?useSSL=false&serverTimezone=UTC
     username: root
-    password: Akki143@
+    password: root
     driver-class-name: com.mysql.cj.jdbc.Driver
     hikari:
       pool-name: HikariCP
